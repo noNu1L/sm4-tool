@@ -1,5 +1,7 @@
 # SM4 加密解密工具
 
+![img.png](https://github.com/noNu1L/sm4-tool/blob/master/document/img.png?raw=true)
+
 基于国密 SM4 算法的桌面加密解密工具，使用 Tauri + Vue.js 开发。
 
 ## 功能特性
