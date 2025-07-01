@@ -1,0 +1,48 @@
+{
+  "$schema": "https://schema.tauri.app/config/2.0.0",
+  "productName": "SM4 加密解密工具",
+  "version": "0.1.0",
+  "identifier": "com.example.sm4-tool",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:1421"
+  },
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "SM4 加密解密工具",
+        "width": 700,
+        "height": 750,
+        "minWidth": 700,
+        "minHeight": 750,
+        "resizable": true,
+        "fullscreen": false,
+        "decorations": false,
+        "alwaysOnTop": false,
+        "center": true
+      }
+    ],
+    "security": {
+      "csp": null,
+      "capabilities": ["default"]
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.ico"
+    ],
+    "resources": [],
+    "copyright": "",
+    "category": "Utility",
+    "shortDescription": "SM4 加密解密工具",
+    "longDescription": "基于国密 SM4 算法的加密解密工具，支持文本和 Excel 文件的批量处理"
+  }
+} 

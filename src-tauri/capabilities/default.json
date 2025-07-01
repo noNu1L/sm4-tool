@@ -1,0 +1,13 @@
+{
+  "$schema": "https://schema.tauri.app/config/2.0.0",
+  "identifier": "default",
+  "description": "Default permissions for the application",
+  "local": true,
+  "windows": ["main"],
+  "permissions": [
+    "core:default",
+    "fs:allow-read-text-file",
+    "fs:allow-read-file",
+    "dialog:allow-open"
+  ]
+} 

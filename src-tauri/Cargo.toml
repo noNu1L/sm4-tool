@@ -1,0 +1,22 @@
+[package]
+name = "sm4-tool"
+version = "0.1.0"
+description = "SM4 加密解密工具"
+authors = ["you"]
+license = ""
+repository = ""
+edition = "2021"
+
+[build-dependencies]
+tauri-build = { version = "2.0", features = [] }
+
+[dependencies]
+tauri = { version = "2.0", features = [] }
+tauri-plugin-fs = "2.0"
+tauri-plugin-dialog = "2.0"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+[features]
+default = ["custom-protocol"]
+custom-protocol = ["tauri/custom-protocol"] 

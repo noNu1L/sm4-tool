@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SM4 算法测试</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f7;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .result {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-family: 'Consolas', monospace;
+            word-break: break-all;
+        }
+        .success { color: #28a745; }
+        .error { color: #dc3545; }
+    </style>
+</head>
+<body>
+    <h1>SM4 算法测试</h1>
+    
+    <div class="test-section">
+        <h2>基本加密解密测试</h2>
+        <div id="basic-test"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>批量处理测试</h2>
+        <div id="batch-test"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>逗号分隔测试</h2>
+        <div id="comma-test"></div>
+    </div>
+
+    <script type="module">
+        // 导入 SM4 工具类
+        import { SM4BatchUtil } from './src/utils/sm4.js';
+        
+        const sm4Util = new SM4BatchUtil();
+        
+        // 基本测试
+        function basicTest() {
+            const testData = [
+                '测试文本123',
+                'Hello World',
+                '这是一个中文测试',
+                '02378054000'
+            ];
+            
+            let results = [];
+            
+            testData.forEach(text => {
+                try {
+                    const encrypted = sm4Util.encrypt(text);
+                    const decrypted = sm4Util.decrypt(encrypted);
+                    
+                    const success = text === decrypted;
+                    results.push(`
+                        <div>
+                            <strong>原文：</strong> ${text}<br>
+                            <strong>密文：</strong> <span class="result">${encrypted}</span><br>
+                            <strong>解密：</strong> ${decrypted}<br>
+                            <strong>结果：</strong> <span class="${success ? 'success' : 'error'}">${success ? '✓ 通过' : '✗ 失败'}</span>
+                        </div>
+                        <hr>
+                    `);
+                } catch (error) {
+                    results.push(`
+                        <div>
+                            <strong>原文：</strong> ${text}<br>
+                            <strong>错误：</strong> <span class="error">${error.message}</span>
+                        </div>
+                        <hr>
+                    `);
+                }
+            });
+            
+            document.getElementById('basic-test').innerHTML = results.join('');
+        }
+        
+        // 批量处理测试
+        function batchTest() {
+            const lines = [
+                '用户名1',
+                '用户名2',
+                '用户名3',
+                ''  // 空行测试
+            ];
+            
+            try {
+                const encrypted = sm4Util.processLines(lines, 'encrypt');
+                const decrypted = sm4Util.processLines(encrypted, 'decrypt');
+                
+                const success = JSON.stringify(lines) === JSON.stringify(decrypted);
+                
+                document.getElementById('batch-test').innerHTML = `
+                    <div>
+                        <strong>原始数据：</strong><br>
+                        <div class="result">${lines.join('<br>')}</div>
+                        <strong>加密后：</strong><br>
+                        <div class="result">${encrypted.join('<br>')}</div>
+                        <strong>解密后：</strong><br>
+                        <div class="result">${decrypted.join('<br>')}</div>
+                        <strong>结果：</strong> <span class="${success ? 'success' : 'error'}">${success ? '✓ 通过' : '✗ 失败'}</span>
+                    </div>
+                `;
+            } catch (error) {
+                document.getElementById('batch-test').innerHTML = `
+                    <div class="error">错误：${error.message}</div>
+                `;
+            }
+        }
+        
+        // 逗号分隔测试
+        function commaTest() {
+            const text1 = '数据1';
+            const text2 = '数据2';
+            const text3 = '数据3';
+            
+            try {
+                const encrypted1 = sm4Util.encrypt(text1);
+                const encrypted2 = sm4Util.encrypt(text2);
+                const encrypted3 = sm4Util.encrypt(text3);
+                
+                const commaEncrypted = `${encrypted1},${encrypted2},${encrypted3}`;
+                const decrypted = sm4Util.decrypt(commaEncrypted);
+                const expected = `${text1},${text2},${text3}`;
+                
+                const success = expected === decrypted;
+                
+                document.getElementById('comma-test').innerHTML = `
+                    <div>
+                        <strong>原始数据：</strong> ${expected}<br>
+                        <strong>逗号分隔密文：</strong><br>
+                        <div class="result">${commaEncrypted}</div>
+                        <strong>解密结果：</strong> ${decrypted}<br>
+                        <strong>结果：</strong> <span class="${success ? 'success' : 'error'}">${success ? '✓ 通过' : '✗ 失败'}</span>
+                    </div>
+                `;
+            } catch (error) {
+                document.getElementById('comma-test').innerHTML = `
+                    <div class="error">错误：${error.message}</div>
+                `;
+            }
+        }
+        
+        // 运行所有测试
+        basicTest();
+        batchTest();
+        commaTest();
+    </script>
+</body>
+</html> 
